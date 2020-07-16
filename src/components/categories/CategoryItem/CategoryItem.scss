@@ -1,0 +1,59 @@
+.category-item {
+  border: #ff770b 1px solid;
+  padding: 5px;
+  color: #333141;
+  display: flex;
+  justify-content: space-between;
+  background-color: #ffffff;
+  text-decoration: none;
+  border-radius: 10px 0 0 10px;
+  &:hover{
+    color: #ffffff;
+    background-color: #ff770b;
+  }
+}
+
+.active{
+  color: #000000;
+  background-color: #ffffff;
+}
+
+.category-icons {
+  display: flex;
+  padding: 2px;
+  cursor: pointer;
+
+  &_add {
+    display: flex;
+    align-items: flex-end;
+    padding: 2px;
+    color: #14a800;
+    &:hover {
+      color: #000000;
+    }
+  }
+
+  &_delete {
+    display: flex;
+    align-items: baseline;
+    color: #bd0200;
+    &:hover {
+      color: #000000;
+    }
+  }
+
+
+  &_edit {
+    color: #e25f00;
+    &:hover {
+      color: #000000;
+    }
+  }
+}
+.input-edit{
+  margin: 0 10px;
+  border-radius: 5px;
+  padding: 4px;
+  text-align: center;
+  font-size: 21px;
+}

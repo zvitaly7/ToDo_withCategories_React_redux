@@ -1,39 +1,41 @@
 import React from "react";
 import './CategoryList.scss'
+import CategoryItem from "../CategoryItem/CategotyItem";
 
 
 class CategoryList extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
+    onChoosen = () => {
+        const {onChoose} = this.props;
+        onChoose(this.props.id);
+    };
 
     render() {
-        const {id, name, deleteItem, onChoose, active} = this.props;
+        const {id, name, deleteItem, onChoose, categories, addSubcategory, editCategory, rootCategory, history} = this.props;
+        const subCategories = (rootCategory.sub || []).map((categoryId) => categories.find(cat => cat.id === categoryId));
+        const isTaskExist = categories.sub && categories.sub.length > 0;
         return (
-            <div className="category-list">
-                {name && <div className={active === true ? 'category-item active' : 'category-item'} >
-                    <div>
-                        <span className={'title'} onClick={()=>onChoose(id)}>{name}</span>
-                        <span className='fa fa-pencil-square-o category-icons_edit' onClick={() => deleteItem(id)}/>
-                    </div>
-                    <div className="category-icons">
-                        <span className='fa fa-trash-o category-icons_delete' onClick={() => deleteItem(id)}/>
-                        <span className='fa fa-plus-square-o category-icons_add' onClick={() => deleteItem(id)}/>
-                    </div>
-                </div>}
 
+            <div className="category-list">
+                {name &&
+                <CategoryItem id={id} name={name} deleteItem={deleteItem} onChoose={this.onChoosen}
+                              editCategory={editCategory} haveSubs={isTaskExist}
+                              addSubcategory={addSubcategory} history={history}
+
+                />}
                 <ul className="category-list-main">
-                    {(this.props.sub|| []).map(cat =>
-                        <li className="" key={cat.id}>
-                            <CategoryList id={cat.id} name={cat.name} sub={cat.sub} active={cat.active}
-                                          deleteItem={() => deleteItem(cat.id)} onChoose={()=>onChoose(cat.id)}/>
-                        </li>
-                    )}
+                    {(subCategories || []).map(cat => {
+                        return (<li className="" key={cat.id}>
+                            <CategoryList rootCategory={cat} addSubcategory={addSubcategory} id={cat.id} name={cat.name}
+                                          active={null}
+                                          deleteItem={deleteItem} onChoose={onChoose} editCategory={editCategory}
+                                          categories={categories} history={history}/>
+                        </li>)
+                    })}
                 </ul>
             </div>
         )
     }
 }
+
 export default CategoryList;
 

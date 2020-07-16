@@ -7,7 +7,15 @@ export const Input = props => {
     const onBlurInternal = e =>
         props.onBlur && props.onBlur(e.target.value);
 
-    return (
+    return  props.type === "text" ?
+        <textarea
+            {...props}
+            onBlur={onBlurInternal}
+            onChange={onChangeInternal}
+        >
+            {props.children}
+        </textarea>
+        :
         <input
             {...props}
             onBlur={onBlurInternal}
@@ -15,5 +23,4 @@ export const Input = props => {
         >
             {props.children}
         </input>
-    );
 };

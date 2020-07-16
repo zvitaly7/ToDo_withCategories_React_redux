@@ -1,0 +1,41 @@
+.edit-note-text {
+  padding: 5px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  width: 80%;
+  height: 400px;
+  resize: none;
+}
+
+.edit-note-input {
+  padding: 5px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  overflow: auto;
+  text-align: center;
+}
+
+.edit-page{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+.edit-page-title{
+  width: 100%;
+}
+.edit-page-main{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+.edit-page-footer{
+  width: 100%;
+}
+.controls{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}

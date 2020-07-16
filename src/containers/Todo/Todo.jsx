@@ -2,13 +2,24 @@ import React, {Component} from "react";
 import './Todo.scss'
 import {connect} from "react-redux"
 import CategoryList from "../../components/categories/CategoryList/CatrgoryList";
-import {chooseCategory, addCategory, deleteCategory, addTask} from "../../store/actions/actionCreator";
-import {CATEGORIES} from "../../store/exampleStorrage";
+import {
+    chooseCategory,
+    addCategory,
+    deleteCategory,
+    addTask,
+    editCategory,
+    addSubcategory,
+    showDeleteConfirmModal,
+    addTaskIdToCategory
+} from "../../store/actions/actionCreator";
 import Search from "../../components/search/Search";
 import {Input} from "../../components/input/Input";
 import {Button} from "../../components/button/button";
 import TaskList from "../../components/tasks/TaskList/TaskList";
-import {tasks} from "../../store/reducers/tasks";
+import ProgressBar from "../../components/progressbar/ProgressBar";
+import {Route} from "react-router";
+import {Switch} from "react-router";
+import TaskEdit from "../../components/tasks/TaskEdit/TaskEdit";
 
 
 class Todo extends Component {
@@ -17,7 +28,7 @@ class Todo extends Component {
 
         this.state = {
             addCategoryName: "",
-            addTaskTitle:"",
+            addTaskTitle: "",
         };
 
     }
@@ -27,49 +38,40 @@ class Todo extends Component {
     };
 
     onTaskChange = value => {
-    this.setState({addTaskTitle: value});
-};
+        this.setState({addTaskTitle: value});
+    };
 
     addCategory = () => {
         const {addCategoryName} = this.state;
         const {addCategory} = this.props;
-        addCategory(addCategoryName);
+        const uniqueId = ((1 + Math.random()) * 0x10000) | 0;
+        console.log(uniqueId);
+        addCategory(addCategoryName, uniqueId);
         this.setState({addCategoryName: ""});
     };
 
     addTask = () => {
         const {addTaskTitle} = this.state;
-        const {addTask, tasks} = this.props;
-        addTask(tasks.length+1, addTaskTitle);
+        const uniqueId = ((1 + Math.random()) * 0x10000) | 0;
+        const catId = this.props.history.location.pathname.split('/')[2];
+        const {addTask, addTaskIdToCategory} = this.props;
+        addTask(uniqueId, addTaskTitle, catId);
+        addTaskIdToCategory(uniqueId, catId);
         this.setState({addTaskTitle: ""});
 
     };
 
-    onChoose = (id) => {
-        const {chooseCategory} = this.props;
-        chooseCategory(id);
-    };
-
-
     render() {
-        const {categories, chooseCategory, tasks, deleteCategory, allTasks} = this.props;
-        const isTaskExist = tasks && tasks.length > 0;
-        isTaskExist && (allTasks.push(tasks) || allTasks.slice(0));
+        const {
+            chooseCategory, editCategory, allCategories, addSubcategory, history,showDeleteConfirmModal
+        } = this.props;
         return (
             <div className="todo-main">
                 <div className="header">
                     <h1 className="logo">ToDo List Zheltko Vitaly App</h1>
                     <Search/>
                 </div>
-                <div className="progress">
-
-
-                    <progress max="100" value="0"></progress>
-                    <div className="progress-value">50%</div>
-                    <div className="progress-bg">
-                        <div className="progress-bar"></div>
-                    </div>
-                </div>
+                <Route path={'/home/'} component={ProgressBar}/>
                 <div className="input-area">
                     <div className="addCategory-area">
                         <Input
@@ -93,23 +95,31 @@ class Todo extends Component {
                     </div>
                 </div>
                 <div className="workspace">
-                    <div className="list"><CategoryList sub={categories} onChoose={this.onChoose}
-                                                        deleteItem={deleteCategory}/></div>
+                    <div className="list"><CategoryList categories={allCategories} onChoose={chooseCategory}
+                                                        deleteItem={showDeleteConfirmModal} rootCategory={allCategories[0]}
+                                                        addSubcategory={addSubcategory}
+                                                        editCategory={editCategory} history={history}
+                    /></div>
                     <div className="tasks-area">
-                        {isTaskExist || <h1> Choose category of tasks</h1>}
-                        {isTaskExist && <TaskList taskList={tasks}/>}
+                        <Switch>
+                        <Route  exact path={'/home/:id'} component={TaskList}/>
+                        <Route  exact path={'/home/:id/:task'} render={(props) =>
+                            <TaskEdit {...props}
+                                      activeCat={this.props.activeCategory} />}/>
+                        </Switch>
                     </div>
                 </div>
-
-
             </div>
         );
     }
-
 }
 
 export default connect(state => ({
-    categories: state.categories.allCategories,
-    tasks: state.categories.activeCategory.tasks,
-    allTasks: state.tasks.allTasks
-}), {chooseCategory, addCategory, deleteCategory, addTask})(Todo);
+    activeCategory: state.categories.activeCategory,
+    allTasks: state.tasks.allTasks,
+    allCategories: state.categories.allCategories
+}), {chooseCategory, addCategory, deleteCategory, addTask, editCategory, addSubcategory,
+    showDeleteConfirmModal,addTaskIdToCategory})(Todo);
+
+
+//<ProgressBar success={isTaskExist ? this.updateProgress() : 0}/>

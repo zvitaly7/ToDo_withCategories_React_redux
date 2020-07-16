@@ -7,11 +7,16 @@ import './index.css';
 import '../node_modules/font-awesome/css/font-awesome.min.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import {createBrowserHistory} from "history";
+
+
+export const history = createBrowserHistory();
+
 
 ReactDOM.render(
     <Provider store={store}>
-    <App />
+            <App/>
     </Provider>,
-  document.getElementById('root')
+    document.getElementById('root')
 );
 serviceWorker.unregister();

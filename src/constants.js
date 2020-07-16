@@ -9,3 +9,6 @@ export const MODAL_SHOW = 'MODAL_SHOW';
 export const MODAL_HIDE = 'MODAL_HIDE';
 export const EDIT_TASK = 'EDIT_TASK';
 export const APPLY_FILTER = "APPLY_FILTER";
+export const EDIT_CATEGORY = "EDIT_CATEGORY";
+export const ADD_SUBCATEGORY = "ADD_SUBCATEGORY";
+export const ADD_TASK_ID_TO_CATEGORY ="ADD_TASK_ID_TO_CATEGORY";

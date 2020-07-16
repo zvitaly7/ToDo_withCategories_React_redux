@@ -1,15 +1,28 @@
-import {CATEGORIES} from "../exampleStorrage";
-import {ADD_TASK} from "../../constants";
+import {TASKS} from "../taskkist";
+import {ADD_TASK, EDIT_TASK} from "../../constants";
+
+export const tasks = (state = {allTasks: TASKS, filtered: [], searchInput: ''}, {id, title, text, type, isDone}) => {
+    switch (type) {
+        case ADD_TASK:
+            return {
+                ...state,
+                ...state.allTasks.push({id, isOpen: false, title}),
+            };
+
+        case EDIT_TASK:
+            debugger
+            return {
+                ...state,
+                allTasks: state.allTasks.map(task => {
+                    if (task.id === id) {
+                        return {id, title, text, isDone};
+                    }
+                    return {...task};
+                }),
+            };
 
 
-export const tasks = (state = {allTasks: [], filtered: [], searchInput: ''}, {id, title, text, type}) => {
-        switch (type) {
-           case ADD_TASK:
-               return {
-                  ...state,
-                   allTasks: [...state.allTasks, {id, title, text}]
-              };
-            default:
-             return state;
-       }
-   };
+        default:
+            return state;
+    }
+};

@@ -1,6 +1,14 @@
-import {CATEGORIES} from "../exampleStorrage"
-import {ADD_CATEGORY, ADD_TASK, CHOOSE_CATEGORY, DELETE_CATEGORY} from "../../constants";
-import {tasks} from "./tasks";
+
+import {CATEGORIES} from "../storrage";
+import {
+    ADD_CATEGORY,
+    CHOOSE_CATEGORY,
+    DELETE_CATEGORY,
+    EDIT_CATEGORY,
+    ADD_SUBCATEGORY,
+    ADD_TASK_ID_TO_CATEGORY
+} from "../../constants";
+
 
 const categories = (state = {
     allCategories: CATEGORIES,
@@ -8,65 +16,79 @@ const categories = (state = {
     activeCategory: [],
     filteredTasks: [],
     searchInput: ''
-}, {id, name, active, type, title}) => {
-
+}, {id, name, active, type, title, uniqueId}) => {
     switch (type) {
 
         case CHOOSE_CATEGORY:
-            console.log(id);
             return {
                 ...state,
-                activeCategory: state.allCategories.find((category) => findRecursive(id,category))
+                activeCategory: state.allCategories.find(category => category.id === id)
 
 
             };
-
-        case ADD_TASK:
+        case EDIT_CATEGORY:
             return {
                 ...state,
-                ...state.activeCategory.tasks.push({id, isOpen:false, title})
+                allCategories: state.allCategories.map(cat => {
+                    if (cat.id === id) {
+                        return {...cat, name};
+                    }
+                    return {...cat};
+                }),
+            };
+        case ADD_SUBCATEGORY:
+            return {
+                ...state,
+                allCategories: [...state.allCategories, {
+                    id: uniqueId,
+                    name: ' ',
+                    active: false,
+                    tasks: [],
+                    sub: []
+                },],
+                ...state.allCategories.find(cat => cat.id === id).sub.push(uniqueId),
 
             };
-
+        case ADD_TASK_ID_TO_CATEGORY:
+            return {
+                ...state,
+                ...state.allCategories.find(cat => cat.id.toString() === id).tasks.push(uniqueId),
+            };
 
         case ADD_CATEGORY:
             return {
                 ...state,
                 allCategories: [...state.allCategories, {
-                    id: 8,
+                    id: uniqueId,
                     name,
                     active: false,
-                    tasks:[],
-                    sub:[]
-                }]
+                    tasks: [],
+                    sub: []
+                },],
+                // eslint-disable-next-line array-callback-return
+                ...state.allCategories.find((category) => {
+                    if (category.id === "root") {
+                        return category.sub.unshift(uniqueId)
+                    }
+                })
             };
-
-
         case DELETE_CATEGORY:
             return {
                 ...state,
-                allCategories: state.allCategories.filter(category => category.id !== id),
+                allCategories: deleteItemFromAllCategories(id, state.allCategories),
             };
-
-
         default:
             return state;
-
     }
-
-
 };
 export default categories;
 
-
-function findRecursive(id, category) {
-    console.log(category.id) ;
-
-    if (category.id === id){
-        return category.active = true;
-    }
-    console.log(category.id) ;
-
-
-}
-
+const deleteItemFromAllCategories = (id, allCategories) => {
+debugger
+    return allCategories.map(cat => {
+        return {
+            ...cat,
+            sub: (cat.sub || []).filter(subId => subId !== id)
+        }
+    }).filter(cat => cat.id !== id)
+};
