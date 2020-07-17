@@ -7,7 +7,7 @@ class CategoryItem extends React.Component {
         super(props);
         this.state = {
             edit: this.props.name === " ",
-            CategoryName: this.props.name
+            CategoryName: this.props.name,
         }
     }
 
@@ -43,12 +43,19 @@ class CategoryItem extends React.Component {
         history.push(`/home/${id}`)
     };
 
+    onChangeTaskCategory =(id, taskId) => {
+        const {onChoose}= this.props;
+        onChoose(Number(id));
+        console.log(id, taskId)
+    };
+
 
     render() {
-        const {id,history} = this.props;
-        const path = history.location.pathname.slice(6);
+        const {id,history,activeCategory} = this.props;
+        const path = history.location.pathname.split('/')[2];
+        const TaskPathId = history.location.pathname.split('/')[3];
         return (
-            <div className={path === id.toString()? "category-item active": "category-item" } >
+            <div className={(activeCategory.id ||Number(path)) === id? "category-item active": "category-item" } >
                 <div>
                     {this.state.edit ? <Input
                         type='title'
@@ -62,10 +69,14 @@ class CategoryItem extends React.Component {
                         <span className='fa fa-check-square category-icons_edit' onClick={() => this.onEdit(id)}/>
                         : <span className='fa fa-pencil-square-o category-icons_edit' onClick={() => this.onEdit(id)}/>}
                 </div>
-                <div className="category-icons">
-                    <span className='fa fa-trash-o category-icons_delete' onClick={() => this.onDeleteCategory(id)}/>
-                    <span className='fa fa-plus-square-o category-icons_add' onClick={() => this.onAddSubcategory(id)}/>
-                </div>
+                {TaskPathId? <div className="category-icons">
+                    <span className='fa fa-reply category-icons_change_category' onClick={() => this.onChangeTaskCategory(id, TaskPathId)}/>
+                </div> :
+                    <div className="category-icons">
+                        <span className='fa fa-trash-o category-icons_delete' onClick={() => this.onDeleteCategory(id)}/>
+                        <span className='fa fa-plus-square-o category-icons_add' onClick={() => this.onAddSubcategory(id)}/>
+                    </div>
+                }
             </div>
 
         )

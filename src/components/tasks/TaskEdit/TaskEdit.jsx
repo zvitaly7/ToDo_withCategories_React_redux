@@ -8,7 +8,7 @@ import {
     addTask,
     chooseCategory,
     deleteCategory,
-    editCategory, editTask
+    editCategory, editTask, changeCategoryTaskId
 } from "../../../store/actions/actionCreator";
 
 import './TaskEdit.scss';
@@ -41,7 +41,9 @@ export class TaskEdit extends Component {
     };
 
     onSave = (catId) => {
+        const {activeCategory} =this.props;
         this.props.editTask(this.state.taskId, this.state.taskName, this.state.taskDescription, this.state.taskStatus);
+        this.props.changeCategoryTaskId(activeCategory.id, this.state.taskId, catId);
         this.props.history.push(`/home/${catId}`)
     };
 
@@ -88,7 +90,8 @@ export class TaskEdit extends Component {
 }
 
 export default connect(state => ({
+    activeCategory: state.categories.activeCategory,
     tasks: state.tasks.allTasks,
     allTasks: state.tasks.allTasks,
     allCategories: state.categories.allCategories
-}), {chooseCategory, addCategory, deleteCategory, addTask, editCategory, addSubcategory, editTask})(TaskEdit);
+}), {chooseCategory, addCategory, deleteCategory, addTask, editCategory, addSubcategory, editTask, changeCategoryTaskId})(TaskEdit);

@@ -6,6 +6,15 @@
   border: none;
   border-radius: 10px 0 0 10px;
   cursor: pointer;
+  &:active {
+    border: none;
+    outline: none;
+    background-color: #ff4b00;
+  }
+  &:focus {
+    border: none;
+    outline: none;
+  }
 }
 
 .confirm-modal-no {
@@ -16,4 +25,14 @@
   border: none;
   border-radius: 0 10px 10px 0;
   cursor: pointer;
+
+  &:active {
+    border: none;
+    outline: none;
+    background-color: #ff4b00;
+  }
+  &:focus {
+    border: none;
+    outline: none;
+  }
 }

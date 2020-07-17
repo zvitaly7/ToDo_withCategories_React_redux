@@ -1,7 +1,7 @@
 import React from "react";
 import {
     ADD_CATEGORY, ADD_TASK, CHOOSE_CATEGORY, DELETE_CATEGORY, EDIT_CATEGORY, ADD_SUBCATEGORY, MODAL_SHOW,
-    MODAL_HIDE, ADD_TASK_ID_TO_CATEGORY, EDIT_TASK
+    MODAL_HIDE, ADD_TASK_ID_TO_CATEGORY, EDIT_TASK, CHANGE_CATEGORY_TASK_ID
 } from "../../constants";
 import {ConfirmModal} from "../../components/ConfirmModal/ConfirmModal";
 
@@ -55,6 +55,13 @@ export const addTaskIdToCategory = (uniqueId, id) => ({
     type: ADD_TASK_ID_TO_CATEGORY,
     uniqueId,
     id
+});
+
+export const changeCategoryTaskId = (id, taskId, prevCat) => ({
+    type: CHANGE_CATEGORY_TASK_ID,
+    id,
+    taskId,
+    prevCat
 });
 
 export const showDeleteConfirmModal = (id, name) => dispatch => dispatch(showModal({

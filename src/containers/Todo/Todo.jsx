@@ -10,7 +10,8 @@ import {
     editCategory,
     addSubcategory,
     showDeleteConfirmModal,
-    addTaskIdToCategory
+    addTaskIdToCategory,
+    changeCategoryTaskId
 } from "../../store/actions/actionCreator";
 import Search from "../../components/search/Search";
 import {Input} from "../../components/input/Input";
@@ -63,8 +64,10 @@ class Todo extends Component {
 
     render() {
         const {
-            chooseCategory, editCategory, allCategories, addSubcategory, history,showDeleteConfirmModal
+            chooseCategory, editCategory, allCategories, addSubcategory,
+            history,showDeleteConfirmModal,changeCategoryTaskId,activeCategory
         } = this.props;
+        console.log(activeCategory);
         return (
             <div className="todo-main">
                 <div className="header">
@@ -99,6 +102,7 @@ class Todo extends Component {
                                                         deleteItem={showDeleteConfirmModal} rootCategory={allCategories[0]}
                                                         addSubcategory={addSubcategory}
                                                         editCategory={editCategory} history={history}
+                                                        changeCategoryTaskId={changeCategoryTaskId} activeCategory={activeCategory}
                     /></div>
                     <div className="tasks-area">
                         <Switch>
@@ -119,7 +123,7 @@ export default connect(state => ({
     allTasks: state.tasks.allTasks,
     allCategories: state.categories.allCategories
 }), {chooseCategory, addCategory, deleteCategory, addTask, editCategory, addSubcategory,
-    showDeleteConfirmModal,addTaskIdToCategory})(Todo);
+    showDeleteConfirmModal,addTaskIdToCategory,changeCategoryTaskId})(Todo);
 
 
 //<ProgressBar success={isTaskExist ? this.updateProgress() : 0}/>

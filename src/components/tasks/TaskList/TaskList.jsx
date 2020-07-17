@@ -15,7 +15,6 @@ import {
 class TaskList extends Component {
     render() {
         const {allCategories, removeTask, history, tasks} = this.props;
-        debugger
         const taskList = (allCategories.find(cat => cat.id.toString() === this.props.history.location.pathname.slice(6) || '')?
             allCategories.find(cat => cat.id.toString() === this.props.history.location.pathname.slice(6) || '').tasks
         : []);

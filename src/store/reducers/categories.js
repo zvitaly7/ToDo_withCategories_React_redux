@@ -6,8 +6,10 @@ import {
     DELETE_CATEGORY,
     EDIT_CATEGORY,
     ADD_SUBCATEGORY,
-    ADD_TASK_ID_TO_CATEGORY
+    ADD_TASK_ID_TO_CATEGORY,
+    CHANGE_CATEGORY_TASK_ID
 } from "../../constants";
+import {tasks} from "./tasks";
 
 
 const categories = (state = {
@@ -16,7 +18,7 @@ const categories = (state = {
     activeCategory: [],
     filteredTasks: [],
     searchInput: ''
-}, {id, name, active, type, title, uniqueId}) => {
+}, {id, name, active, type, title, uniqueId, taskId, prevCat}) => {
     switch (type) {
 
         case CHOOSE_CATEGORY:
@@ -53,6 +55,23 @@ const categories = (state = {
             return {
                 ...state,
                 ...state.allCategories.find(cat => cat.id.toString() === id).tasks.push(uniqueId),
+            };
+
+        case CHANGE_CATEGORY_TASK_ID:
+            debugger
+            return {
+                ...state,
+                allCategories: state.allCategories.map(cat => {
+                    if (cat.id === id) {
+                        return {...cat, ...cat.tasks.unshift(Number(taskId))}
+                    }
+                    if(cat.id === Number(prevCat)){
+                        return {...cat, tasks:(cat.tasks || []).filter(Id => Id !== taskId)}
+                    }
+                    return {...cat};
+                }),
+                activeCategory: state.allCategories.find(category => category.id === Number(prevCat))
+
             };
 
         case ADD_CATEGORY:

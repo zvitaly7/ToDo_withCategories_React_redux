@@ -7,15 +7,16 @@
   background-color: #ffffff;
   text-decoration: none;
   border-radius: 10px 0 0 10px;
-  &:hover{
+
+  &:hover {
     color: #ffffff;
     background-color: #ff770b;
   }
 }
 
-.active{
-  color: #000000;
-  background-color: #ffffff;
+.active {
+  color: #ffffff;
+  background-color: #ff770b;
 }
 
 .category-icons {
@@ -28,6 +29,7 @@
     align-items: flex-end;
     padding: 2px;
     color: #14a800;
+
     &:hover {
       color: #000000;
     }
@@ -37,20 +39,28 @@
     display: flex;
     align-items: baseline;
     color: #bd0200;
+
     &:hover {
       color: #000000;
     }
   }
 
-
   &_edit {
-    color: #e25f00;
+    color: #43436f;
+
     &:hover {
       color: #000000;
+    }
+  }
+
+  &_change_category {
+    &:hover {
+      color: #14a800;
     }
   }
 }
-.input-edit{
+
+.input-edit {
   margin: 0 10px;
   border-radius: 5px;
   padding: 4px;
